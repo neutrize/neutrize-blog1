@@ -1,0 +1,1448 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="NTZ Blog">
+<meta name="theme-color" content="#0a0a0a">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.svg">
+<title>NEUTRIZE Blog</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0a0a;--sf:#141414;--sf2:#1c1c1c;--sf3:#242424;
+  --b:rgba(255,255,255,.08);--b2:rgba(255,255,255,.14);--b3:rgba(255,255,255,.22);
+  --t:#f0ede8;--t2:rgba(240,237,232,.5);--t3:rgba(240,237,232,.28);--t4:rgba(240,237,232,.12);
+  --gold:#c9a96e;--gd2:rgba(201,169,110,.15);--gd3:rgba(201,169,110,.07);
+  --red:#e05555;--rd2:rgba(224,85,85,.15);
+  --r:10px;--rl:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:var(--bg);color:var(--t);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;-webkit-text-size-adjust:100%}
+.scr{display:none;min-height:100vh;flex-direction:column;position:relative}
+.scr.on{display:flex}
+
+/* SPLASH */
+#s-splash{align-items:center;justify-content:center;animation:fi .5s ease;position:relative;z-index:1}
+.sp-logo{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:44px;letter-spacing:.22em;margin-bottom:4px}
+.sp-sub{font-size:10px;letter-spacing:.2em;color:var(--gold);text-transform:uppercase;margin-bottom:52px}
+.sp-btn{padding:13px 38px;border:.5px solid var(--gold);border-radius:40px;background:transparent;color:var(--gold);font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:.12em;cursor:pointer;position:relative;z-index:10}
+.sp-btn:active{background:var(--gd2)}
+
+/* STYLIST PICK */
+#s-pick{animation:su .3s ease}
+.pick-head{padding:54px 22px 20px;border-bottom:.5px solid var(--b)}
+.pick-eye{font-size:10px;letter-spacing:.16em;color:var(--gold);text-transform:uppercase;margin-bottom:6px}
+.pick-ttl{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:28px;line-height:1.2}
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:18px;flex:1}
+.sc{background:var(--sf);border:.5px solid var(--b);border-radius:var(--rl);padding:18px 14px;cursor:pointer;transition:border-color .2s,background .2s}
+.sc.sel{border-color:var(--gold);background:var(--gd3)}
+.sc:active{transform:scale(.97)}
+.sc-ini{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:300;margin-bottom:8px;line-height:1}
+.sc-nm{font-size:14px;font-weight:400;margin-bottom:2px}
+.sc-rl{font-size:10px;color:var(--t3);letter-spacing:.06em;margin-bottom:8px}
+.sc-vb{font-size:10px;color:var(--t2);line-height:1.5}
+.sc.wide{grid-column:1/-1;display:flex;align-items:center;gap:18px}
+.sc.wide .sc-ini{font-size:44px;margin-bottom:0}
+.sc.wide .sc-inf{flex:1}
+.go-btn{margin:0 18px 36px;padding:15px;background:var(--gold);color:#0a0a0a;border:none;border-radius:40px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;letter-spacing:.1em;cursor:pointer;opacity:.35;transition:opacity .2s}
+.go-btn.rdy{opacity:1}
+.go-btn:active{transform:scale(.98)}
+
+/* APP */
+#s-app{background:var(--bg)}
+.app-bar{padding:50px 18px 14px;border-bottom:.5px solid var(--b);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.app-logo{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:19px;letter-spacing:.15em}
+.bar-r{display:flex;gap:7px;align-items:center}
+.pill{display:flex;align-items:center;gap:6px;background:var(--sf);border:.5px solid var(--b2);border-radius:40px;padding:5px 12px 5px 7px;cursor:pointer}
+.pill-dot{width:7px;height:7px;border-radius:50%}
+.pill-txt{font-size:11px;color:var(--t2)}
+.hist-pill{padding:5px 13px;background:var(--sf);border:.5px solid var(--b2);border-radius:40px;cursor:pointer;font-size:11px;color:var(--t2);display:flex;align-items:center;gap:5px}
+.hn{color:var(--gold);font-size:11px}
+
+/* TABS */
+.tabs{display:flex;border-bottom:.5px solid var(--b);background:var(--bg);position:sticky;top:0;z-index:20;flex-shrink:0;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex-shrink:0;padding:13px 14px;font-size:11px;letter-spacing:.07em;color:var(--t3);background:none;border:none;cursor:pointer;border-bottom:1.5px solid transparent;position:relative;bottom:-.5px;transition:color .15s,border-color .15s;white-space:nowrap}
+.tab.on{color:var(--gold);border-bottom-color:var(--gold)}
+.tc{display:none;padding:18px;flex:1}
+.tc.on{display:block}
+
+/* FORM */
+.fld{margin-bottom:13px}
+.lb{font-size:10px;letter-spacing:.11em;color:var(--t3);text-transform:uppercase;margin-bottom:5px;display:block}
+select,input[type=text],input[type=password],textarea{width:100%;background:var(--sf);border:.5px solid var(--b2);border-radius:var(--r);color:var(--t);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:300;padding:11px 13px;appearance:none;transition:border-color .2s}
+select:focus,input:focus,textarea:focus{outline:none;border-color:var(--gold)}
+textarea{resize:none;line-height:1.6}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+
+/* CHAR COUNTER */
+.char-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px}
+.char-cnt{font-size:11px;letter-spacing:.04em}
+.char-cnt.ok{color:var(--gold)}
+.char-cnt.over{color:var(--red)}
+.char-cnt.near{color:#e0a555}
+
+/* UPLOAD */
+.upzone{border:.5px dashed var(--b2);border-radius:var(--rl);padding:22px 14px;text-align:center;cursor:pointer;position:relative;transition:background .15s;margin-bottom:13px}
+.upzone:active{background:var(--sf)}
+.upzone input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.uz-ic{font-size:20px;margin-bottom:5px;color:var(--t3)}
+.uz-tx{font-size:12px;color:var(--t3);line-height:1.5}
+.uz-tx em{color:var(--gold);font-style:normal}
+.prev-row{display:flex;gap:7px;margin-bottom:13px;flex-wrap:wrap}
+.prev-img{width:76px;height:76px;object-fit:cover;border-radius:var(--r);border:.5px solid var(--b2)}
+
+/* KW */
+.kw-wrap{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:13px}
+.kw{padding:5px 11px;font-size:11px;border-radius:40px;border:.5px solid var(--b2);color:var(--t2);background:var(--sf);cursor:pointer;transition:all .12s}
+.kw.on{background:var(--gd2);color:var(--gold);border-color:var(--gold)}
+
+/* TYPE GRID */
+.tg{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:13px}
+.tc-card{background:var(--sf);border:.5px solid var(--b);border-radius:var(--r);padding:9px 7px;text-align:center;cursor:pointer;transition:all .12s}
+.tc-card.on{border-color:var(--gold);background:var(--gd3)}
+.tc-nm{font-size:11px;font-weight:400;color:var(--t2);margin-bottom:1px}
+.tc-ds{font-size:9px;color:var(--t3);line-height:1.4}
+.tc-card.on .tc-nm{color:var(--gold)}
+
+/* STARS */
+.star-row{display:flex;gap:8px;margin-bottom:13px}
+.star-btn{flex:1;padding:10px 4px;background:var(--sf);border:.5px solid var(--b);border-radius:var(--r);text-align:center;cursor:pointer;transition:all .12s;font-size:13px;color:var(--t2)}
+.star-btn.on{border-color:var(--gold);background:var(--gd3);color:var(--gold)}
+
+/* REVIEW CATEGORY */
+.rev-cats{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:13px}
+.rev-cat{background:var(--sf);border:.5px solid var(--b);border-radius:var(--r);padding:9px 10px;cursor:pointer;transition:all .12s}
+.rev-cat.on{border-color:var(--gold);background:var(--gd3)}
+.rev-cat-nm{font-size:11px;font-weight:400;color:var(--t2);margin-bottom:1px}
+.rev-cat-ds{font-size:9px;color:var(--t3)}
+.rev-cat.on .rev-cat-nm{color:var(--gold)}
+
+/* GEN BTN */
+.gen-btn{width:100%;padding:15px;background:transparent;border:.5px solid var(--b2);border-radius:40px;color:var(--t2);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;letter-spacing:.07em;cursor:pointer;transition:all .18s;margin-bottom:14px}
+.gen-btn:active{background:var(--sf);transform:scale(.99)}
+.gen-btn:disabled{opacity:.4;cursor:not-allowed}
+
+/* LOADING */
+.lbar{height:1px;background:var(--b);overflow:hidden;margin-bottom:7px;display:none}
+.lbar.on{display:block}
+.lb-fill{height:100%;animation:ld 1.8s ease infinite;background:linear-gradient(90deg,var(--gold),rgba(201,169,110,.3))}
+@keyframes ld{0%{width:0;margin-left:0}50%{width:55%;margin-left:22%}100%{width:0;margin-left:100%}}
+
+/* OUTPUT */
+.out-box{background:var(--sf);border:.5px solid var(--b2);border-radius:var(--rl);padding:16px;margin-bottom:14px;display:none;animation:fi .25s ease}
+.out-box.on{display:block}
+.out-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.out-eye{font-size:9px;letter-spacing:.13em;color:var(--gold);text-transform:uppercase}
+.out-acts{display:flex;gap:5px;flex-wrap:wrap}
+.obtn{padding:4px 11px;font-size:10px;border:.5px solid var(--b2);border-radius:20px;background:transparent;color:var(--t2);cursor:pointer;transition:all .12s;letter-spacing:.05em}
+.obtn:active{background:var(--sf2)}
+.obtn.ed{border-color:var(--gold);color:var(--gold)}
+
+/* TITLE LIST */
+.title-list{margin-bottom:12px}
+.t-opt{background:var(--sf2);border:.5px solid var(--b);border-radius:var(--r);padding:10px 12px;margin-bottom:6px;cursor:pointer;display:flex;align-items:flex-start;justify-content:space-between;gap:8px;transition:all .12s}
+.t-opt:active,.t-opt.picked{border-color:var(--gold);background:var(--gd3)}
+.t-tx{font-size:13px;color:var(--t);line-height:1.45;flex:1}
+.t-len{font-size:9px;color:var(--t3);white-space:nowrap;padding:2px 7px;border:.5px solid var(--b);border-radius:20px;margin-top:2px;flex-shrink:0}
+.t-len.over{color:var(--red);border-color:rgba(224,85,85,.3)}
+
+/* BODY */
+.body-wrap{border-top:.5px solid var(--b);padding-top:12px;margin-top:4px}
+.body-txt{font-size:13px;line-height:1.9;color:var(--t);white-space:pre-wrap;min-height:60px}
+.body-txt[contenteditable=true]{outline:none;caret-color:var(--gold)}
+.edit-hint{font-size:10px;color:var(--t3);text-align:right;margin-top:5px;display:none}
+.body-txt[contenteditable=true]~.edit-hint{display:block}
+.out-meta{display:flex;gap:5px;margin-top:10px;padding-top:8px;border-top:.5px solid var(--b);flex-wrap:wrap}
+.m-tag{font-size:9px;padding:2px 7px;border-radius:20px;background:var(--sf2);color:var(--t3);letter-spacing:.05em}
+.m-tag.warn{background:var(--rd2);color:var(--red)}
+
+/* HPB BTN */
+.hpb-btn{width:100%;padding:14px;background:var(--gd2);border:.5px solid var(--gold);border-radius:40px;color:var(--gold);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;letter-spacing:.1em;cursor:pointer;transition:all .18s;margin-bottom:8px;display:none}
+.hpb-btn.on{display:block}
+.hpb-btn:active{background:rgba(201,169,110,.25);transform:scale(.99)}
+
+/* HISTORY */
+#s-hist{background:var(--bg);animation:su .28s ease}
+.hist-head{padding:52px 18px 14px;border-bottom:.5px solid var(--b);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.hist-ttl{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:22px;letter-spacing:.06em}
+.back{padding:5px 13px;border:.5px solid var(--b2);border-radius:20px;background:transparent;color:var(--t2);font-size:12px;cursor:pointer}
+.hist-body{padding:14px 18px;overflow-y:auto;flex:1}
+.hist-empty{text-align:center;padding:60px 20px;color:var(--t3);font-size:13px;line-height:1.9}
+.h-item{border-bottom:.5px solid var(--b);padding:14px 0;cursor:pointer;transition:opacity .12s}
+.h-item:last-child{border-bottom:none}
+.h-item:active{opacity:.65}
+.h-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px}
+.h-badges{display:flex;gap:5px;align-items:center}
+.h-type{font-size:9px;padding:2px 8px;border-radius:20px;letter-spacing:.05em}
+.h-sty{font-size:9px;color:var(--t3)}
+.h-date{font-size:10px;color:var(--t3)}
+.h-ttl{font-size:13px;color:var(--t);font-weight:400;margin-bottom:3px;line-height:1.4}
+.h-prev{font-size:12px;color:var(--t2);line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.h-ch{font-size:10px;color:var(--t4);margin-top:3px}
+
+/* DETAIL */
+#s-detail{background:var(--bg);animation:su .25s ease}
+.det-head{padding:52px 18px 14px;border-bottom:.5px solid var(--b);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.det-body{padding:18px;overflow-y:auto;flex:1}
+.det-ttl-lbl{font-size:9px;letter-spacing:.12em;color:var(--gold);text-transform:uppercase;margin-bottom:8px}
+.det-ttl{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:300;line-height:1.4;margin-bottom:14px}
+.det-meta{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px}
+.det-txt{font-size:13px;line-height:1.9;color:var(--t);white-space:pre-wrap}
+.det-txt[contenteditable=true]{outline:none;caret-color:var(--gold)}
+.det-acts{display:flex;gap:8px;margin-top:18px;padding-top:14px;border-top:.5px solid var(--b)}
+.d-btn{flex:1;padding:12px;border:.5px solid var(--b2);border-radius:40px;background:transparent;color:var(--t2);font-size:12px;cursor:pointer;text-align:center;transition:all .15s}
+.d-btn.gold{border-color:var(--gold);color:var(--gold);background:var(--gd3)}
+.d-btn.red{border-color:rgba(224,85,85,.3);color:rgba(224,85,85,.6)}
+.d-btn:active{opacity:.7}
+
+/* API */
+.api-notice{background:var(--sf);border:.5px solid var(--b2);border-radius:var(--rl);padding:18px;margin:14px 18px 0}
+.api-notice p{font-size:12px;color:var(--t2);line-height:1.7;margin-bottom:11px}
+.api-row{display:flex;gap:7px}
+.api-row input{flex:1}
+.api-save{padding:11px 14px;background:var(--gd2);border:.5px solid var(--gold);border-radius:var(--r);color:var(--gold);font-size:12px;cursor:pointer;white-space:nowrap}
+
+/* TIPS */
+.tip{border-bottom:.5px solid var(--b);padding:14px 0}
+.tip:last-of-type{border-bottom:none}
+.tip-ttl{font-size:13px;font-weight:400;margin-bottom:5px}
+.tip-body{font-size:12px;color:var(--t2);line-height:1.75}
+.chip{display:inline-block;margin:3px 3px 3px 0;padding:3px 9px;font-size:10px;border-radius:20px;background:var(--gd2);color:var(--gold)}
+
+/* INFO BOX */
+.info-box{background:var(--sf2);border:.5px solid var(--b);border-radius:var(--r);padding:10px 12px;margin-bottom:13px;font-size:11px;color:var(--t2);line-height:1.6}
+.info-box em{color:var(--gold);font-style:normal}
+
+/* COLORS */
+.ck{color:#5bc4a5}.ci{color:#6aabdf}.cu{color:#e0855a}.co{color:#d4a254}.ce{color:#9b94d4}
+.dk{background:#5bc4a5}.di{background:#6aabdf}.du{background:#e0855a}.do{background:#d4a254}.de{background:#9b94d4}
+.bk{background:rgba(91,196,165,.15);color:#5bc4a5}.bi{background:rgba(106,171,223,.15);color:#6aabdf}.bu{background:rgba(224,133,90,.15);color:#e0855a}.bo{background:rgba(212,162,84,.15);color:#d4a254}.be{background:rgba(155,148,212,.15);color:#9b94d4}
+
+.sb{height:env(safe-area-inset-bottom,14px)}
+.dvd{height:.5px;background:var(--b);margin:11px 0}
+
+/* TOAST */
+.toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:rgba(201,169,110,.93);color:#0a0a0a;padding:8px 20px;border-radius:40px;font-size:12px;z-index:9999;animation:fi .2s ease;pointer-events:none;white-space:nowrap}
+
+@keyframes fi{from{opacity:0}to{opacity:1}}
+@keyframes su{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div class="scr on" id="s-splash">
+  <div style="text-align:center">
+    <div class="sp-logo">NEUTRIZE</div>
+    <div class="sp-sub">Blog Generator</div>
+    <button class="sp-btn" onclick="goTo('s-pick')">スタイリストを選択</button>
+  </div>
+</div>
+
+<!-- STYLIST PICK -->
+<div class="scr" id="s-pick">
+  <div class="pick-head">
+    <div class="pick-eye">Step 1</div>
+    <div class="pick-ttl">あなたは<br>誰ですか？</div>
+  </div>
+  <div class="sg">
+    <div class="sc" onclick="pickStylist('kondo',this)">
+      <div class="sc-ini ck">K</div>
+      <div class="sc-nm">近藤</div><div class="sc-rl">スタイリスト</div>
+      <div class="sc-vb">爽やか・自然体<br>親しみやすい文体</div>
+    </div>
+    <div class="sc" onclick="pickStylist('ishii',this)">
+      <div class="sc-ini ci">I</div>
+      <div class="sc-nm">石井</div><div class="sc-rl">スタイリスト</div>
+      <div class="sc-vb">丁寧・誠実<br>寄り添いながら伝える</div>
+    </div>
+    <div class="sc" onclick="pickStylist('ujihira',this)">
+      <div class="sc-ini cu">U</div>
+      <div class="sc-nm">氏平</div><div class="sc-rl">スタイリスト</div>
+      <div class="sc-vb">トレンド×似合わせ<br>世界観＋その人らしさ</div>
+    </div>
+    <div class="sc" onclick="pickStylist('oshima',this)">
+      <div class="sc-ini co">O</div>
+      <div class="sc-nm">大島</div><div class="sc-rl">スタイリスト</div>
+      <div class="sc-vb">やさしさ×バランス<br>幅広く届く文体</div>
+    </div>
+    <div class="sc" onclick="pickStylist('ueda',this)">
+      <div class="sc-ini ce">E</div>
+      <div class="sc-nm">植田</div><div class="sc-rl">オーナー</div>
+      <div class="sc-vb">ブランド哲学・洗練<br>NEUTRIZEの声そのもの</div>
+    </div>
+    <div class="sc" onclick="pickStylist('assistant',this)">
+      <div class="sc-ini ck">A</div>
+      <div class="sc-nm">アシスタント</div><div class="sc-rl">アシスタント</div>
+      <div class="sc-vb">フレッシュ・親しみやすい<br>お客様目線の文体</div>
+    </div>
+    <div class="sc wide" onclick="pickStylist('neutrize',this)" style="border-color:rgba(201,169,110,.3);background:rgba(201,169,110,.04)">
+      <div class="sc-ini" style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;letter-spacing:.1em;color:var(--gold);margin-bottom:0">N</div>
+      <div class="sc-inf">
+        <div class="sc-nm" style="color:var(--gold)">NEUTRIZE</div><div class="sc-rl">サロン公式</div>
+        <div class="sc-vb">サロン全体の声で書く<br>ブランドとして発信したいとき</div>
+      </div>
+    </div>
+  </div>
+  <button class="go-btn" id="goBtn" onclick="startApp()">この名前で始める</button>
+  <div class="sb"></div>
+</div>
+
+<!-- MAIN APP -->
+<div class="scr" id="s-app">
+  <div class="app-bar">
+    <div class="app-logo">NEUTRIZE</div>
+    <div class="bar-r">
+      <div class="hist-pill" onclick="goTo('s-hist')">
+        <span>履歴</span><span class="hn" id="histCount">0</span>
+      </div>
+      <div class="pill" onclick="goTo('s-pick')">
+        <div class="pill-dot" id="hDot"></div>
+        <div class="pill-txt" id="hName">—</div>
+      </div>
+    </div>
+  </div>
+  <div id="apiWrap"></div>
+
+  <div class="tabs">
+    <button class="tab on"  onclick="swTab('style',this)">スタイルブログ</button>
+    <button class="tab"     onclick="swTab('seo',this)">SEOブログ</button>
+    <button class="tab"     onclick="swTab('stylepage',this)">スタイルページ</button>
+    <button class="tab"     onclick="swTab('coupon',this)">クーポン</button>
+    <button class="tab"     onclick="swTab('review',this)">口コミ返信</button>
+    <button class="tab"     onclick="swTab('tips',this)">ヒント</button>
+  </div>
+
+  <!-- ── STYLE BLOG (renamed) TAB ── -->
+  <div class="tc on" id="tc-style">
+    <div class="upzone" id="upZone">
+      <input type="file" accept="image/*" multiple onchange="handleImgs(event)">
+      <div class="uz-ic">↑</div>
+      <div class="uz-tx"><em>写真を追加</em>（最大3枚）<br>画像を読み取って文体に反映します</div>
+    </div>
+    <div class="prev-row" id="prevRow"></div>
+    <div class="r2">
+      <div class="fld">
+        <label class="lb">メニュー</label>
+        <select id="s-menu">
+          <option value="">選択</option>
+          <option>カット</option><option>透明感カラー</option>
+          <option>高濃度水素カラー</option><option>カット＋カラー</option>
+          <option>髪質改善トリートメント</option><option>縮毛矯正</option>
+          <option>oggi otto</option><option>パーマ</option>
+        </select>
+      </div>
+      <div class="fld">
+        <label class="lb">長さ</label>
+        <select id="s-len">
+          <option value="">指定なし</option>
+          <option>ショート</option><option>ボブ</option>
+          <option>ミディアム</option><option>セミロング</option><option>ロング</option>
+        </select>
+      </div>
+    </div>
+    <div class="fld">
+      <label class="lb">スタイルイメージ</label>
+      <input type="text" id="s-img" placeholder="例：ミルクベージュのくびれミディ">
+    </div>
+    <div class="fld">
+      <label class="lb">ターゲット</label>
+      <select id="s-tgt">
+        <option>20代女性</option><option>30代女性</option>
+        <option>ダメージ悩み</option><option>くせ毛悩み</option>
+        <option>白髪気になる</option><option>メンズ</option>
+      </select>
+    </div>
+    <div class="fld">
+      <label class="lb">アピールポイント（任意）</label>
+      <textarea id="s-ap" rows="2" placeholder="例：骨格補正・ダメージレス・透け感"></textarea>
+    </div>
+    <div class="fld">
+      <label class="lb">キーワード</label>
+      <div style="font-size:9px;color:var(--t3);letter-spacing:.08em;margin-bottom:4px">エリア</div>
+      <div class="kw-wrap" style="margin-bottom:8px">
+        <span class="kw" onclick="togKw(this)">岡山 美容室</span>
+        <span class="kw" onclick="togKw(this)">岡山市北区</span>
+        <span class="kw" onclick="togKw(this)">丸の内 美容室</span>
+        <span class="kw" onclick="togKw(this)">岡山駅 美容室</span>
+        <span class="kw" onclick="togKw(this)">岡山 美容院</span>
+      </div>
+      <div style="font-size:9px;color:var(--t3);letter-spacing:.08em;margin-bottom:4px">メニュー</div>
+      <div class="kw-wrap" style="margin-bottom:8px">
+        <span class="kw" onclick="togKw(this)">髪質改善</span>
+        <span class="kw" onclick="togKw(this)">透明感カラー</span>
+        <span class="kw" onclick="togKw(this)">似合わせカット</span>
+        <span class="kw" onclick="togKw(this)">水素カラー</span>
+        <span class="kw" onclick="togKw(this)">縮毛矯正</span>
+        <span class="kw" onclick="togKw(this)">oggi otto</span>
+        <span class="kw" onclick="togKw(this)">トリートメント</span>
+        <span class="kw" onclick="togKw(this)">ハイライト</span>
+        <span class="kw" onclick="togKw(this)">インナーカラー</span>
+        <span class="kw" onclick="togKw(this)">バレイヤージュ</span>
+        <span class="kw" onclick="togKw(this)">ケアブリーチ</span>
+      </div>
+      <div style="font-size:9px;color:var(--t3);letter-spacing:.08em;margin-bottom:4px">スタイル</div>
+      <div class="kw-wrap" style="margin-bottom:8px">
+        <span class="kw" onclick="togKw(this)">ショート</span>
+        <span class="kw" onclick="togKw(this)">ボブ</span>
+        <span class="kw" onclick="togKw(this)">ミディアム</span>
+        <span class="kw" onclick="togKw(this)">くびれヘア</span>
+        <span class="kw" onclick="togKw(this)">前髪あり</span>
+        <span class="kw" onclick="togKw(this)">シースルーバング</span>
+        <span class="kw" onclick="togKw(this)">切りっぱなしボブ</span>
+      </div>
+      <div style="font-size:9px;color:var(--t3);letter-spacing:.08em;margin-bottom:4px">HPB上位ワード（月次更新）</div>
+      <div class="kw-wrap" id="kw-style-hpb" style="margin-bottom:4px">
+      </div>
+      <div id="kw-style-empty" style="font-size:11px;color:var(--t3);margin-bottom:8px;display:none">まだ登録されていません。ヒントタブから更新できます。</div>
+    </div>
+    <div class="lbar" id="lb-style"><div class="lb-fill"></div></div>
+    <button class="gen-btn" id="btn-style" onclick="genStyle()">スタイル紹介ブログを生成 — タイトル3案＋本文</button>
+    <div class="out-box" id="out-style">
+      <div class="out-hd">
+        <div class="out-eye">タイトル案（タップでコピー）</div>
+        <button class="obtn" onclick="regenStyle()">再生成</button>
+      </div>
+      <div class="title-list" id="titles-style"></div>
+      <div class="dvd"></div>
+      <div class="out-hd" style="margin-top:8px">
+        <div class="out-eye">本文（500〜600字）</div>
+        <div class="out-acts">
+          <button class="obtn" id="ed-style" onclick="toggleEdit('body-style','ed-style')">編集</button>
+          <button class="obtn" onclick="copyEl('body-style')">コピー</button>
+        </div>
+      </div>
+      <div class="body-wrap">
+        <div class="body-txt" id="body-style"></div>
+        <div class="edit-hint">タップして編集 · 外をタップで完了</div>
+      </div>
+      <div class="out-meta" id="meta-style"></div>
+    </div>
+    <button class="hpb-btn" id="hpb-style" onclick="openHPB('body-style')">コピー済み → HPBで投稿する</button>
+    <div class="sb"></div>
+  </div>
+
+  <!-- ── STYLE PAGE TAB ── -->
+  <div class="tc" id="tc-stylepage">
+    <div class="info-box">HPBスタイルページの文字数制限（リアルタイムカウント付き）<br><em>スタイル名：30字以内　コメント：120字以内　メニュー内容：50字以内　ハッシュタグ：20字以内</em></div>
+    <div class="upzone" id="upZoneSP">
+      <input type="file" accept="image/*" multiple onchange="handleImgsSP(event)">
+      <div class="uz-ic">↑</div>
+      <div class="uz-tx"><em>スタイル写真を追加</em>（最大3枚）</div>
+    </div>
+    <div class="prev-row" id="prevRowSP"></div>
+    <div class="r2">
+      <div class="fld">
+        <label class="lb">メニュー</label>
+        <select id="sp-menu">
+          <option value="">選択</option>
+          <option>カット</option><option>透明感カラー</option>
+          <option>高濃度水素カラー</option><option>カット＋カラー</option>
+          <option>髪質改善トリートメント</option><option>縮毛矯正</option>
+          <option>oggi otto</option><option>パーマ</option>
+        </select>
+      </div>
+      <div class="fld">
+        <label class="lb">長さ</label>
+        <select id="sp-len">
+          <option value="">指定なし</option>
+          <option>ショート</option><option>ボブ</option>
+          <option>ミディアム</option><option>セミロング</option><option>ロング</option>
+        </select>
+      </div>
+    </div>
+    <div class="fld">
+      <label class="lb">スタイルイメージ（任意）</label>
+      <input type="text" id="sp-img" placeholder="例：こなれ感ウェーブのアッシュベージュ">
+    </div>
+    <div class="fld">
+      <label class="lb">アピールポイント（任意）</label>
+      <textarea id="sp-ap" rows="2" placeholder="例：骨格補正・透明感・乾かすだけで決まる"></textarea>
+    </div>
+    <div class="lbar" id="lb-sp"><div class="lb-fill"></div></div>
+    <button class="gen-btn" id="btn-sp" onclick="genStylePage()">スタイルページ用テキストを一括生成</button>
+
+    <div class="out-box" id="out-sp">
+      <div class="out-hd">
+        <div class="out-eye">スタイル名（30字以内 / タップでコピー）</div>
+        <button class="obtn" onclick="regenStylePage()">再生成</button>
+      </div>
+      <div class="title-list" id="titles-sp"></div>
+      <div class="dvd"></div>
+      <div class="out-hd" style="margin-top:8px">
+        <div class="out-eye">スタイリストコメント（120字以内）</div>
+        <div class="out-acts">
+          <button class="obtn" id="ed-sp-comment" onclick="toggleEdit('body-sp-comment','ed-sp-comment')">編集</button>
+          <button class="obtn" onclick="copyElCount('body-sp-comment','sp-cnt-comment',120)">コピー</button>
+        </div>
+      </div>
+      <div class="body-wrap">
+        <div class="body-txt" id="body-sp-comment" oninput="liveCount('body-sp-comment','sp-cnt-comment',120)"></div>
+        <div class="edit-hint">タップして編集 · 外をタップで完了</div>
+      </div>
+      <div style="text-align:right;margin-top:3px"><span class="char-cnt" id="sp-cnt-comment">0/120</span></div>
+      <div class="dvd"></div>
+      <div class="out-hd" style="margin-top:8px">
+        <div class="out-eye">メニュー内容タグ（50字以内）</div>
+        <div class="out-acts">
+          <button class="obtn" id="ed-sp-tags" onclick="toggleEdit('body-sp-tags','ed-sp-tags')">編集</button>
+          <button class="obtn" onclick="copyElCount('body-sp-tags','sp-cnt-tags',50)">コピー</button>
+        </div>
+      </div>
+      <div class="body-wrap">
+        <div class="body-txt" id="body-sp-tags" oninput="liveCount('body-sp-tags','sp-cnt-tags',50)"></div>
+        <div class="edit-hint">タップして編集 · 外をタップで完了</div>
+      </div>
+      <div style="text-align:right;margin-top:3px"><span class="char-cnt" id="sp-cnt-tags">0/50</span></div>
+      <div class="dvd"></div>
+      <div class="out-hd" style="margin-top:8px">
+        <div class="out-eye">ハッシュタグ案（各20字以内）</div>
+        <button class="obtn" onclick="copyEl('body-sp-hash')">コピー</button>
+      </div>
+      <div class="body-wrap">
+        <div class="body-txt" id="body-sp-hash"></div>
+      </div>
+      <div class="out-meta" id="meta-sp"></div>
+    </div>
+    <button class="hpb-btn" id="hpb-sp" onclick="openHPBSP()">HPBのスタイルページを開く</button>
+    <div class="sb"></div>
+  </div>
+
+
+  <!-- ── COUPON TAB ── -->
+  <div class="tc" id="tc-coupon">
+    <div class="info-box">HPBクーポンの文字数制限：<em>クーポン名36字以内　クーポン内容90字以内</em>。リアルタイムでカウントします。</div>
+
+    <div class="fld">
+      <label class="lb">クーポンの種別</label>
+      <select id="cp-type">
+        <option value="new">新規</option>
+        <option value="repeat">リピート</option>
+        <option value="both">新規・リピート両方</option>
+      </select>
+    </div>
+
+    <div class="fld">
+      <label class="lb">メニュー内容</label>
+      <select id="cp-menu">
+        <option value="">選択してください</option>
+        <option>カット</option>
+        <option>透明感カラー</option>
+        <option>高濃度水素カラー</option>
+        <option>カット＋カラー</option>
+        <option>カット＋カラー＋トリートメント</option>
+        <option>髪質改善トリートメント</option>
+        <option>縮毛矯正</option>
+        <option>縮毛矯正＋カット</option>
+        <option>oggi otto トリートメント</option>
+        <option>oggi otto＋カラー</option>
+        <option>ヘッドスパ</option>
+      </select>
+    </div>
+
+    <div class="r2">
+      <div class="fld">
+        <label class="lb">価格（税込）</label>
+        <input type="text" id="cp-price" placeholder="例：13800">
+      </div>
+      <div class="fld">
+        <label class="lb">施術時間</label>
+        <select id="cp-time">
+          <option value="">選択</option>
+          <option>60分</option><option>90分</option>
+          <option>120分</option><option>150分</option>
+          <option>180分</option><option>210分</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="fld">
+      <label class="lb">アピールポイント（任意）</label>
+      <textarea id="cp-appeal" rows="2" placeholder="例：oggi otto使用・ダメージレス・骨格補正・似合わせ込み"></textarea>
+    </div>
+
+    <div class="fld">
+      <label class="lb">CVR向上のポイント（複数選択可）</label>
+      <div class="kw-wrap" id="kw-coupon">
+        <span class="kw" onclick="togKw(this)">人気No.1</span>
+        <span class="kw" onclick="togKw(this)">初回限定</span>
+        <span class="kw" onclick="togKw(this)">似合わせ込み</span>
+        <span class="kw" onclick="togKw(this)">カウンセリング無料</span>
+        <span class="kw" onclick="togKw(this)">ダメージレス</span>
+        <span class="kw" onclick="togKw(this)">透明感</span>
+        <span class="kw" onclick="togKw(this)">髪質改善</span>
+        <span class="kw" onclick="togKw(this)">oggiotto使用</span>
+        <span class="kw" onclick="togKw(this)">HPBアワード受賞</span>
+        <span class="kw" onclick="togKw(this)">全国上位1%</span>
+      </div>
+    </div>
+
+    <div class="lbar" id="lb-coupon"><div class="lb-fill"></div></div>
+    <button class="gen-btn" id="btn-coupon" onclick="genCoupon()">クーポン名・内容を生成</button>
+
+    <div class="out-box" id="out-coupon">
+      <div class="out-hd">
+        <div class="out-eye">クーポン名（36字以内 / タップでコピー）</div>
+        <button class="obtn" onclick="regenCoupon()">再生成</button>
+      </div>
+      <div class="title-list" id="titles-coupon"></div>
+
+      <div class="dvd"></div>
+
+      <div class="out-hd" style="margin-top:8px">
+        <div class="out-eye">クーポン内容（90字以内）</div>
+        <div class="out-acts">
+          <button class="obtn" id="ed-coupon" onclick="toggleEdit('body-coupon','ed-coupon')">編集</button>
+          <button class="obtn" onclick="copyElCount('body-coupon','cp-cnt',90)">コピー</button>
+        </div>
+      </div>
+      <div class="body-wrap">
+        <div class="body-txt" id="body-coupon" oninput="liveCount('body-coupon','cp-cnt',90)"></div>
+        <div class="edit-hint">タップして編集 · 外をタップで完了</div>
+      </div>
+      <div style="text-align:right;margin-top:3px"><span class="char-cnt" id="cp-cnt">0/90</span></div>
+      <div class="out-meta" id="meta-coupon"></div>
+    </div>
+    <button class="hpb-btn" id="hpb-coupon" onclick="openHPBCoupon()">HPBのクーポン管理を開く</button>
+    <div class="sb"></div>
+  </div>
+
+  <!-- ── REVIEW REPLY TAB ── -->
+  <div class="tc" id="tc-review">
+    <div class="info-box">お客様の口コミ文を貼り付けて、NEUTRIZEらしい返信文を生成します。<em>返信はサロン代表として自然な文体</em>で出力します。</div>
+
+    <div class="fld">
+      <label class="lb">星の評価</label>
+      <div class="star-row">
+        <div class="star-btn" onclick="pickStar(this,1)">★<br><span style="font-size:9px">1</span></div>
+        <div class="star-btn" onclick="pickStar(this,2)">★★<br><span style="font-size:9px">2</span></div>
+        <div class="star-btn" onclick="pickStar(this,3)">★★★<br><span style="font-size:9px">3</span></div>
+        <div class="star-btn" onclick="pickStar(this,4)">★★★★<br><span style="font-size:9px">4</span></div>
+        <div class="star-btn on" onclick="pickStar(this,5)">★★★★★<br><span style="font-size:9px">5</span></div>
+      </div>
+    </div>
+
+    <div class="fld">
+      <label class="lb">口コミの内容カテゴリ</label>
+      <div class="rev-cats">
+        <div class="rev-cat on" onclick="pickRevCat(this,'positive')">
+          <div class="rev-cat-nm">満足・感謝</div>
+          <div class="rev-cat-ds">仕上がりが良かった系</div>
+        </div>
+        <div class="rev-cat" onclick="pickRevCat(this,'repeat')">
+          <div class="rev-cat-nm">リピート宣言</div>
+          <div class="rev-cat-ds">また来ます系</div>
+        </div>
+        <div class="rev-cat" onclick="pickRevCat(this,'tech')">
+          <div class="rev-cat-nm">技術への評価</div>
+          <div class="rev-cat-ds">カット・カラーの腕前</div>
+        </div>
+        <div class="rev-cat" onclick="pickRevCat(this,'atmosphere')">
+          <div class="rev-cat-nm">雰囲気・接客</div>
+          <div class="rev-cat-ds">居心地・話しやすさ</div>
+        </div>
+        <div class="rev-cat" onclick="pickRevCat(this,'concern')">
+          <div class="rev-cat-nm">改善要望あり</div>
+          <div class="rev-cat-ds">気になる点がある系</div>
+        </div>
+        <div class="rev-cat" onclick="pickRevCat(this,'other')">
+          <div class="rev-cat-nm">その他</div>
+          <div class="rev-cat-ds">分類しにくい内容</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fld">
+      <label class="lb">口コミ本文を貼り付け</label>
+      <textarea id="rev-text" rows="5" placeholder="お客様の口コミ文をここに貼り付けてください。&#10;&#10;例：カラーとカットをお願いしました。カラーの色みが透明感があってとても気に入っています。カットも顔のかたちに合わせてくれて自然な仕上がりでした。次回もお願いしたいです。"></textarea>
+    </div>
+
+    <div class="fld">
+      <label class="lb">返信のトーン</label>
+      <select id="rev-tone">
+        <option value="warm">温かみ・丁寧（デフォルト）</option>
+        <option value="cool">洗練・クール</option>
+        <option value="casual">親しみやすい・カジュアル</option>
+      </select>
+    </div>
+
+    <div class="lbar" id="lb-rev"><div class="lb-fill"></div></div>
+    <button class="gen-btn" id="btn-rev" onclick="genReview()">返信文を生成</button>
+
+    <div class="out-box" id="out-rev">
+      <div class="out-hd">
+        <div class="out-eye">返信文</div>
+        <div class="out-acts">
+          <button class="obtn" id="ed-rev" onclick="toggleEdit('body-rev','ed-rev')">編集</button>
+          <button class="obtn" onclick="regenReview()">再生成</button>
+          <button class="obtn" onclick="copyEl('body-rev')">コピー</button>
+        </div>
+      </div>
+      <div class="body-wrap">
+        <div class="body-txt" id="body-rev"></div>
+        <div class="edit-hint">タップして編集 · 外をタップで完了</div>
+      </div>
+      <div class="out-meta" id="meta-rev"></div>
+    </div>
+    <button class="hpb-btn" id="hpb-rev" onclick="openHPBRev()">コピー済み → HPBで返信する</button>
+    <div class="sb"></div>
+  </div>
+
+  <!-- ── SEO BLOG TAB ── -->
+  <div class="tc" id="tc-seo">
+    <div class="fld">
+      <label class="lb">記事タイプ</label>
+      <div class="tg">
+        <div class="tc-card on" onclick="pickType(this,'how-to')"><div class="tc-nm">Howto</div><div class="tc-ds">技術解説で上位</div></div>
+        <div class="tc-card" onclick="pickType(this,'column')"><div class="tc-nm">お悩み</div><div class="tc-ds">共感→来店</div></div>
+        <div class="tc-card" onclick="pickType(this,'local')"><div class="tc-nm">エリア</div><div class="tc-ds">岡山×検索</div></div>
+        <div class="tc-card" onclick="pickType(this,'menu')"><div class="tc-nm">メニュー</div><div class="tc-ds">施術を深掘り</div></div>
+        <div class="tc-card" onclick="pickType(this,'season')"><div class="tc-nm">季節</div><div class="tc-ds">トレンド提案</div></div>
+        <div class="tc-card" onclick="pickType(this,'faq')"><div class="tc-nm">FAQ</div><div class="tc-ds">ロングテール</div></div>
+      </div>
+    </div>
+    <div class="r2">
+      <div class="fld">
+        <label class="lb">メインキーワード</label>
+        <input type="text" id="seo-kw" placeholder="例：岡山 縮毛矯正">
+      </div>
+      <div class="fld">
+        <label class="lb">文字数</label>
+        <select id="seo-len">
+          <option value="800">800字</option>
+          <option value="1200">1,200字</option>
+          <option value="2000" selected>2,000字</option>
+        </select>
+      </div>
+    </div>
+    <div class="fld">
+      <label class="lb">読者の悩み（任意）</label>
+      <textarea id="seo-prob" rows="2" placeholder="例：くせ毛で広がる。ホームケアしても変わらない"></textarea>
+    </div>
+    <div class="fld">
+      <label class="lb">SEOキーワード</label>
+      <div style="font-size:9px;color:var(--t3);letter-spacing:.08em;margin-bottom:4px">エリア</div>
+      <div class="kw-wrap" style="margin-bottom:8px">
+        <span class="kw" onclick="togKw(this)">岡山 美容室</span>
+        <span class="kw" onclick="togKw(this)">岡山市北区</span>
+        <span class="kw" onclick="togKw(this)">丸の内 美容室</span>
+        <span class="kw" onclick="togKw(this)">岡山駅 美容室</span>
+        <span class="kw" onclick="togKw(this)">岡山 美容院 おすすめ</span>
+      </div>
+      <div style="font-size:9px;color:var(--t3);letter-spacing:.08em;margin-bottom:4px">メニュー</div>
+      <div class="kw-wrap" style="margin-bottom:8px">
+        <span class="kw" onclick="togKw(this)">髪質改善</span>
+        <span class="kw" onclick="togKw(this)">透明感カラー</span>
+        <span class="kw" onclick="togKw(this)">縮毛矯正</span>
+        <span class="kw" onclick="togKw(this)">水素カラー</span>
+        <span class="kw" onclick="togKw(this)">oggi otto</span>
+        <span class="kw" onclick="togKw(this)">ハイライト</span>
+        <span class="kw" onclick="togKw(this)">インナーカラー</span>
+        <span class="kw" onclick="togKw(this)">バレイヤージュ</span>
+        <span class="kw" onclick="togKw(this)">ケアブリーチ</span>
+        <span class="kw" onclick="togKw(this)">NEUTRIZE</span>
+      </div>
+      <div style="font-size:9px;color:var(--t3);letter-spacing:.08em;margin-bottom:4px">お悩み</div>
+      <div class="kw-wrap" style="margin-bottom:8px">
+        <span class="kw" onclick="togKw(this)">くせ毛</span>
+        <span class="kw" onclick="togKw(this)">広がる髪</span>
+        <span class="kw" onclick="togKw(this)">ダメージヘア</span>
+        <span class="kw" onclick="togKw(this)">白髪</span>
+        <span class="kw" onclick="togKw(this)">ペタンコ髪</span>
+        <span class="kw" onclick="togKw(this)">乾燥 パサつき</span>
+        <span class="kw" onclick="togKw(this)">カラー褪色</span>
+      </div>
+      <div style="font-size:9px;color:var(--t3);letter-spacing:.08em;margin-bottom:4px">ターゲット</div>
+      <div class="kw-wrap" style="margin-bottom:8px">
+        <span class="kw" onclick="togKw(this)">20代 女性</span>
+        <span class="kw" onclick="togKw(this)">30代 女性</span>
+        <span class="kw" onclick="togKw(this)">学生</span>
+        <span class="kw" onclick="togKw(this)">社会人</span>
+      </div>
+      <div style="font-size:9px;color:var(--t3);letter-spacing:.08em;margin-bottom:4px">HPB上位ワード（月次更新）</div>
+      <div class="kw-wrap" id="kw-seo-hpb" style="margin-bottom:4px">
+      </div>
+      <div id="kw-seo-empty" style="font-size:11px;color:var(--t3);margin-bottom:8px;display:none">まだ登録されていません。ヒントタブから更新できます。</div>
+    </div>
+    <div class="lbar" id="lb-seo"><div class="lb-fill"></div></div>
+    <button class="gen-btn" id="btn-seo" onclick="genSeo()">SEOブログを生成</button>
+    <div class="out-box" id="out-seo">
+      <div class="out-hd">
+        <div class="out-eye">タイトル案（タップでコピー）</div>
+        <button class="obtn" onclick="regenSeo()">再生成</button>
+      </div>
+      <div class="title-list" id="titles-seo"></div>
+      <div class="dvd"></div>
+      <div class="out-hd" style="margin-top:8px">
+        <div class="out-eye">本文</div>
+        <div class="out-acts">
+          <button class="obtn" id="ed-seo" onclick="toggleEdit('body-seo','ed-seo')">編集</button>
+          <button class="obtn" onclick="copyEl('body-seo')">コピー</button>
+        </div>
+      </div>
+      <div class="body-wrap">
+        <div class="body-txt" id="body-seo"></div>
+        <div class="edit-hint">タップして編集 · 外をタップで完了</div>
+      </div>
+      <div class="out-meta" id="meta-seo"></div>
+    </div>
+    <button class="hpb-btn" id="hpb-seo" onclick="openHPB('body-seo')">コピー済み → HPBで投稿する</button>
+    <div class="sb"></div>
+  </div>
+
+  <!-- ── TIPS TAB ── -->
+  <div class="tc" id="tc-tips">
+    <div class="tip"><div class="tip-ttl">HPB各ページの文字数制限</div><div class="tip-body">ブログ：タイトル25字・本文500〜600字推奨<br>スタイルページ：スタイル名30字・コメント120字・メニュー内容50字・ハッシュタグ20字<br>クーポン名：36字・説明文：90字<br>→このツールはすべてリアルタイムでカウントします</div></div>
+    <div class="tip"><div class="tip-ttl">口コミ返信のコツ</div><div class="tip-body">返信はサロンの「声」として公開されます。感謝→内容への共感→次回への一言の3ステップが基本。改善要望には謝罪より「ご意見ありがとうございます」からスタートするのがベター。</div></div>
+    <div class="tip"><div class="tip-ttl">岡山×NEUTRIZEの勝ちキーワード</div><div class="tip-body"><span class="chip">岡山 美容室 透明感</span><span class="chip">岡山 縮毛矯正 上手い</span><span class="chip">丸の内 美容室 おすすめ</span><span class="chip">岡山 髪質改善</span><span class="chip">oggi otto 岡山</span><span class="chip">岡山 くせ毛 美容室</span></div></div>
+    <div class="tip"><div class="tip-ttl">理想の投稿サイクル</div><div class="tip-body">週2〜3本が理想。スタイル紹介2本＋SEOコラム1本を基本に。月1回は2,000字以上の解説記事を入れるとドメイン評価が上がる。</div></div>
+    <div class="tip"><div class="tip-ttl">CVRを上げる締め文のコツ</div><div class="tip-body">現在42.4% → エリア平均51.9%の差を埋めるには「締め」の精度が鍵。価格・所要時間を明記した上でHPBへの直リンクを入れること。</div></div>
+
+    <div class="tip">
+      <div class="tip-ttl" style="margin-bottom:8px">HPB上位キーワード管理（月次更新）</div>
+      <div class="tip-body" style="margin-bottom:10px">サロンボードのレポートで確認した上位キーワードを登録すると、スタイルブログ・SEOブログのキーワード欄に反映されます。</div>
+      <textarea id="hpb-kw-input" rows="3" placeholder="スペースまたは改行で区切って入力&#10;例：ハイライト　インナーカラー　くせ毛 縮毛矯正" style="margin-bottom:8px;font-size:13px"></textarea>
+      <div style="display:flex;gap:8px">
+        <button onclick="saveHPBKeywords()" style="flex:1;padding:10px;background:var(--gd2);border:.5px solid var(--gold);border-radius:var(--r);color:var(--gold);font-size:12px;cursor:pointer">保存して反映</button>
+        <button onclick="clearHPBKeywords()" style="padding:10px 14px;background:transparent;border:.5px solid var(--b2);border-radius:var(--r);color:var(--t3);font-size:12px;cursor:pointer">クリア</button>
+      </div>
+      <div id="hpb-kw-saved" style="font-size:11px;color:var(--gold);margin-top:6px;display:none">保存しました</div>
+    </div>
+    <div class="sb"></div>
+  </div>
+</div>
+
+<!-- HISTORY -->
+<div class="scr" id="s-hist">
+  <div class="hist-head">
+    <div class="hist-ttl">投稿履歴</div>
+    <button class="back" onclick="goTo('s-app')">← 戻る</button>
+  </div>
+  <div class="hist-body" id="histBody">
+    <div class="hist-empty">まだ履歴がありません。<br>生成後に自動で記録されます。</div>
+  </div>
+</div>
+
+<!-- DETAIL -->
+<div class="scr" id="s-detail">
+  <div class="det-head">
+    <div style="font-size:11px;color:var(--t3)" id="det-badge"></div>
+    <div style="display:flex;gap:7px">
+      <button class="back" onclick="toggleDetEdit()" id="det-edit-btn">編集</button>
+      <button class="back" onclick="goTo('s-hist')">← 戻る</button>
+    </div>
+  </div>
+  <div class="det-body">
+    <div class="det-ttl-lbl">タイトル</div>
+    <div class="det-ttl" id="det-title"></div>
+    <div class="det-meta" id="det-meta"></div>
+    <div class="det-txt" id="det-text"></div>
+    <div class="det-acts">
+      <button class="d-btn gold" onclick="detCopy()">コピー</button>
+      <button class="d-btn gold" onclick="detHPB()">HPBで投稿</button>
+      <button class="d-btn red"  onclick="detDelete()">削除</button>
+    </div>
+  </div>
+  <div class="sb"></div>
+</div>
+
+<script>
+// ── STYLIST DATA ──
+const S = {
+  kondo:    {nm:'近藤',     dot:'dk', bg:'bk', tone:'爽やかで自然体。仕上がりの気持ちよさと親しみやすさを大切にした文体。「なりたいイメージ」を優しく引き出す言葉を選ぶ。', str:'似合わせカット・透明感カラー'},
+  ishii:    {nm:'石井',     dot:'di', bg:'bi', tone:'丁寧で誠実。お客様に寄り添いながら、施術の内容やこだわりをわかりやすく伝える。押しつけがましくなく、でも信頼感がにじみ出る文体。', str:'縮毛矯正・ダメージケア・髪質改善'},
+  ujihira:  {nm:'氏平',     dot:'du', bg:'bu', tone:'スタイリッシュでトレンド感がある。スタイルの「世界観」や「雰囲気」を前面に出しながら、その人の顔立ちや骨格に合わせた視点も自然に盛り込む。読んだ人が「自分のことを言われている」と感じるような言葉を選ぶ。', str:'似合わせカット・個性的カラー・トレンドスタイル'},
+  oshima:   {nm:'大島',     dot:'do', bg:'bo', tone:'やさしく丁寧で、お客様の不安や悩みに寄り添う言葉を選ぶ。難しい言葉は使わず読みやすい。さらに技術的な説明と感覚的な表現をバランスよく組み合わせ、幅広いお客様に届く文体。', str:'髪質改善・oggi otto・幅広いスタイル'},
+  ueda:     {nm:'植田',     dot:'de', bg:'be', tone:'NEUTRIZEのブランド哲学を体現する文体。「余分なものをそぎ落とし、本来の美しさを引き出す」という軸を感じさせる。洗練されていて言葉に無駄がない。', str:'全ジャンル・コンセプト訴求'},
+  neutrize:  {nm:'NEUTRIZE', dot:'de', bg:'be', tone:'NEUTRIZEのサロン公式として書く文体。特定のスタイリスト個人ではなくサロン全体の声として、ブランドの哲学・技術・こだわりを体現する。「余分なものをそぎ落とし、本来の美しさを引き出す」という軸を常に感じさせる。洗練・品格・自信。', str:'サロン公式・ブランドとして伝えたい全ジャンル'},
+  assistant: {nm:'アシスタント', dot:'dk', bg:'bk', tone:'明るくフレッシュで親しみやすい文体。学びながら成長している真摯さが伝わる。飾らず率直で、読んでいて温かみを感じる。専門用語は控えめに、お客様目線の言葉を選ぶ。', str:'シャンプー・アシスタントメニュー・サロンの日常'}
+};
+
+const SYS = `あなたはNEUTRIZE（岡山市北区丸の内の美容室）のライターです。
+以下のスタイルで書いてください：
+- 「大人」という言葉は使わない
+- スタッフ名は書かず「担当スタイリスト」などの表現にする
+- 堅苦しくなりすぎず、自然でさらっと読める文章にする
+- 専門用語は使いすぎず、伝わりやすい言葉を選ぶ
+- NEUTRIZEの強み：髪質改善・似合わせカット・透明感カラー・高濃度水素カラー・oggi otto全国上位1%認定・HPBアワード2022〜2025年連続受賞`;
+
+const SIGNATURE = `\n\nご予約はホットペッパービューティーまたはお電話（086-238-7758）からどうぞ。\n\n` + `＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊\nNEUTRIZE【ニュートライズ】\n岡山県岡山市北区丸の内１－１２－６\n＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊\n≪アクセス≫\n岡山駅から徒歩20分\n路面電車 県庁通り駅から徒歩3分\n提携駐車場有り\n≪営業時間≫\n火曜～土曜 10:00～20:00\n日曜日 9:00～18:00\n≪定休日≫\n月曜日／第1火曜日／第3日曜日\n[当日予約OK]\nネット予約が×の場合もご予約できる場合がございます！\nお気軽にお問い合わせください。\n\u3000\n[関連ワード]\n岡山/岡山駅/髪質改善/ケアカラー/水素カラー/縮毛矯正/ヘアセット/ヘアアレンジ/\nメンズ/MEN'S/眉毛/アイブロウ/前髪/顔周り/ブリーチ/白髪ぼかし/学割U24`;
+
+const SYS_BLOG = SYS + `
+- ブログ本文は500〜600字で書く。署名は別途自動追加されるので本文に含めない
+- 予約誘導の文も本文に含めない（署名に含まれるため）
+- SEOキーワードを無理に詰め込まない。文章の流れを最優先にして、キーワードは自然に溶け込ませる
+- NEUTRIZEの空気感：シンプルで洗練されていて、読んでいて心地よい。押しつけがましくない`;
+
+const HPB_URL = 'https://salonboard.com/login/';
+const HPB_REV_URL = 'https://salonboard.com/login/';
+const TYPE_LBL = {'how-to':'Howto記事','column':'お悩みコラム','local':'エリア集客','menu':'メニュー紹介','season':'季節トレンド','faq':'FAQ記事'};
+
+let stylist = null, imgs = [], imgsSP = [], blogType = 'how-to';
+let starRating = 5, revCat = 'positive';
+let lastStyleP = null, lastSPP = null, lastSeoP = null, lastRevP = null;
+let detIdx = null;
+
+// ── NAV ──
+function goTo(id) {
+  document.querySelectorAll('.scr').forEach(s => s.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  window.scrollTo(0, 0);
+  if (id === 's-hist') renderHist();
+}
+function pickStylist(key, el) {
+  stylist = key;
+  document.querySelectorAll('.sc').forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel');
+  document.getElementById('goBtn').classList.add('rdy');
+}
+function startApp() {
+  if (!stylist) return;
+  const s = S[stylist];
+  document.getElementById('hName').textContent = s.nm;
+  const dot = document.getElementById('hDot');
+  dot.className = 'pill-dot ' + s.dot;
+  checkApi(); updateHistCount(); goTo('s-app');
+}
+
+// ── TABS ──
+function swTab(id, el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
+  el.classList.add('on');
+  document.querySelectorAll('.tc').forEach(c => c.classList.remove('on'));
+  document.getElementById('tc-' + id).classList.add('on');
+}
+
+// ── API ──
+function checkApi() {
+  const wrap = document.getElementById('apiWrap');
+  if (localStorage.getItem('ntz_key')) {
+    wrap.innerHTML = `<div style="display:flex;justify-content:flex-end;padding:6px 18px 0"><button onclick="resetApi()" style="font-size:10px;color:var(--t3);background:none;border:none;cursor:pointer;letter-spacing:.06em">APIキーをリセット</button></div>`;
+    return;
+  }
+  wrap.innerHTML = `<div class="api-notice"><p>初回のみ設定が必要です。Anthropic APIキーを入力してください。</p><div class="api-row"><input type="password" id="apiIn" placeholder="sk-ant-..."><button class="api-save" onclick="saveApi()">保存</button></div></div>`;
+}
+
+function resetApi() {
+  localStorage.removeItem('ntz_key');
+  checkApi();
+  toast('APIキーをリセットしました');
+}
+
+function saveApi() {
+  const v = (document.getElementById('apiIn') || {}).value || '';
+  if (!v.trim().startsWith('sk-')) { toast('APIキーの形式が正しくありません'); return; }
+  localStorage.setItem('ntz_key', v.trim());
+  document.getElementById('apiWrap').innerHTML = '';
+}
+const getKey = () => localStorage.getItem('ntz_key') || '';
+
+// ── FORM HELPERS ──
+function togKw(el) { el.classList.toggle('on'); }
+function getKws(id) { return [...document.querySelectorAll('#' + id + ' .kw.on')].map(k => k.textContent); }
+function pickType(el, t) { document.querySelectorAll('.tc-card').forEach(c => c.classList.remove('on')); el.classList.add('on'); blogType = t; }
+function pickStar(el, n) { document.querySelectorAll('.star-btn').forEach(b => b.classList.remove('on')); el.classList.add('on'); starRating = n; }
+function pickRevCat(el, cat) { document.querySelectorAll('.rev-cat').forEach(c => c.classList.remove('on')); el.classList.add('on'); revCat = cat; }
+
+// ── IMAGES ──
+function handleImgs(e) {
+  imgs = [...e.target.files].slice(0, 3);
+  const row = document.getElementById('prevRow');
+  row.innerHTML = '';
+  imgs.forEach(f => { const img = document.createElement('img'); img.className = 'prev-img'; img.src = URL.createObjectURL(f); row.appendChild(img); });
+  if (imgs.length) document.querySelector('#upZone .uz-tx').innerHTML = `<em>${imgs.length}枚選択済み</em> — タップして変更`;
+}
+function handleImgsSP(e) {
+  imgsSP = [...e.target.files].slice(0, 3);
+  const row = document.getElementById('prevRowSP');
+  row.innerHTML = '';
+  imgsSP.forEach(f => { const img = document.createElement('img'); img.className = 'prev-img'; img.src = URL.createObjectURL(f); row.appendChild(img); });
+  if (imgsSP.length) document.querySelector('#upZoneSP .uz-tx').innerHTML = `<em>${imgsSP.length}枚選択済み</em> — タップして変更`;
+}
+async function b64(file) { return new Promise(r => { const fr = new FileReader(); fr.onload = e => r(e.target.result.split(',')[1]); fr.readAsDataURL(file); }); }
+
+// ── API CALL ──
+async function callAPI(system, messages) {
+  const key = getKey();
+  if (!key) { toast('APIキーを設定してください'); throw new Error('no key'); }
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+    body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1500, system, messages })
+  });
+  const data = await res.json();
+  if (data.error) throw new Error(data.error.message);
+  return data.content.map(c => c.text || '').join('');
+}
+
+// ── PARSE ──
+function parseOut(raw) {
+  const lines = raw.split('\n');
+  const titles = []; const body = [];
+  let inBody = false;
+  for (const ln of lines) {
+    if (/^BODY/.test(ln.trim())) { inBody = true; continue; }
+    if (inBody) { body.push(ln); continue; }
+    const m = ln.match(/^[1-3][.．、]\s*(.+)/);
+    if (m) titles.push(m[1].trim());
+  }
+  return { titles: titles.slice(0, 3), body: body.join('\n').trim() || raw };
+}
+
+// ── RENDER OUTPUT WITH TITLES ──
+function renderTitles(containerId, titles, maxLen) {
+  const tl = document.getElementById(containerId);
+  tl.innerHTML = '';
+  titles.forEach(t => {
+    const over = maxLen && t.length > maxLen;
+    const d = document.createElement('div');
+    d.className = 't-opt'; d.dataset.title = t;
+    d.innerHTML = `<div class="t-tx">${t}</div><div class="t-len${over ? ' over' : ''}">${t.length}字${maxLen ? '/'+maxLen : ''}</div>`;
+    d.onclick = () => { copyText(t); toast('タイトルをコピーしました'); d.classList.toggle('picked'); };
+    tl.appendChild(d);
+  });
+}
+
+function renderBody(bodyId, text, metaId, metaHtml) {
+  const el = document.getElementById(bodyId);
+  el.textContent = text;
+  el.contentEditable = 'false';
+  if (metaId) document.getElementById(metaId).innerHTML = metaHtml;
+}
+
+// ── CHAR COUNT live ──
+function liveCount(bodyId, countId, max) {
+  const len = document.getElementById(bodyId).textContent.length;
+  const el = document.getElementById(countId);
+  if (!el) return;
+  el.textContent = len + '/' + max + '字';
+  el.className = 'char-cnt' + (len > max ? ' over' : len > max * 0.9 ? ' near' : ' ok');
+}
+function copyElCount(bodyId, countId, max) {
+  copyText(document.getElementById(bodyId).textContent);
+  toast('コピーしました');
+}
+function openHPBSP() {
+  toast('HPBのスタイルページを開きます');
+  setTimeout(() => window.open('https://salonboard.com/login/', '_blank'), 600);
+}
+
+// ── EDIT TOGGLE ──
+function toggleEdit(bodyId, btnId) {
+  const el = document.getElementById(bodyId);
+  const btn = document.getElementById(btnId);
+  const isEd = el.contentEditable === 'true';
+  if (isEd) {
+    el.contentEditable = 'false'; el.blur();
+    btn.classList.remove('ed'); btn.textContent = '編集';
+  } else {
+    el.contentEditable = 'true'; el.focus();
+    btn.classList.add('ed'); btn.textContent = '完了';
+    const off = (e) => { if (!el.contains(e.target) && e.target !== btn) { el.contentEditable = 'false'; btn.classList.remove('ed'); btn.textContent = '編集'; document.removeEventListener('touchstart', off); } };
+    document.addEventListener('touchstart', off);
+  }
+}
+
+// ── COPY / HPB ──
+function copyEl(id) { copyText(document.getElementById(id).textContent); toast('コピーしました'); }
+function copyText(t) {
+  if (navigator.clipboard) { navigator.clipboard.writeText(t); return; }
+  const ta = document.createElement('textarea'); ta.value = t; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+}
+function openHPB(bodyId) {
+  copyText(document.getElementById(bodyId).textContent);
+  toast('コピーしました — HPBを開きます');
+  setTimeout(() => window.open(HPB_URL, '_blank'), 600);
+}
+function openHPBRev() {
+  copyText(document.getElementById('body-rev').textContent);
+  toast('コピーしました — HPBを開きます');
+  setTimeout(() => window.open(HPB_REV_URL, '_blank'), 600);
+}
+
+// ── GEN STYLE BLOG ──
+async function genStyle() {
+  const p = { menu: document.getElementById('s-menu').value, len: document.getElementById('s-len').value, img: document.getElementById('s-img').value, tgt: document.getElementById('s-tgt').value, ap: document.getElementById('s-ap').value, kws: getKws('kw-style'), imgs: [...imgs] };
+  lastStyleP = p; await runStyle(p);
+}
+async function regenStyle() { if (lastStyleP) await runStyle(lastStyleP); }
+async function runStyle(p) {
+  const st = S[stylist];
+  setLoading('style', true);
+  const prompt = `以下の条件でHPBスタイル紹介ブログを作成してください。${p.imgs.length ? '添付写真から髪色・質感を読み取り反映してください。' : ''}
+メニュー：${p.menu||'未指定'} / 長さ：${p.len||'未指定'} / イメージ：${p.img||'未指定'} / ターゲット：${p.tgt} / アピール：${p.ap||'なし'} / KW：${p.kws.join('、')||'なし'}
+
+以下の形式で出力してください：
+TITLES
+1. [タイトル案1（25字以内・キーワード含む）]
+2. [タイトル案2（25字以内・違うアングル）]
+3. [タイトル案3（25字以内・感情訴求系）]
+BODY
+[本文のみ500〜600字。絶対に600字を超えないこと。写真の雰囲気から入り、技術のこだわり・仕上がりの魅力を伝えて締める。予約誘導・署名は含めない]`;
+  try {
+    let messages;
+    if (p.imgs.length) {
+      const content = [];
+      for (const f of p.imgs) content.push({ type: 'image', source: { type: 'base64', media_type: f.type || 'image/jpeg', data: await b64(f) } });
+      content.push({ type: 'text', text: prompt });
+      messages = [{ role: 'user', content }];
+    } else {
+      messages = [{ role: 'user', content: prompt }];
+    }
+    const raw = await callAPI(SYS_BLOG + `\n\n【文体】${st.tone}\n【得意】${st.str}`, messages);
+    const { titles, body } = parseOut(raw);
+    const fullBody = body + SIGNATURE;
+    renderTitles('titles-style', titles, 25);
+    const warn = body.length > 600 ? ' warn' : '';
+    renderBody('body-style', fullBody, 'meta-style', `<span class="m-tag${warn}">${body.length}/600字（本文）＋署名</span><span class="m-tag ${st.bg}">${st.nm}</span><span class="m-tag">HPBブログ</span>`);
+    document.getElementById('out-style').classList.add('on');
+    document.getElementById('hpb-style').classList.add('on');
+    saveHist({ type: 'style', typeLabel: 'スタイルブログ', stylist, styleName: st.nm, styleBg: st.bg, title: titles[0] || 'スタイル紹介', body: fullBody, chars: body.length, date: new Date().toISOString() });
+  } catch(e) { if (e.message !== 'no key') toast('エラー: ' + e.message); }
+  setLoading('style', false);
+}
+
+// ── GEN STYLE PAGE ──
+async function genStylePage() {
+  const p = { menu: document.getElementById('sp-menu').value, len: document.getElementById('sp-len').value, img: document.getElementById('sp-img').value, ap: document.getElementById('sp-ap').value, kws: getKws('kw-sp'), imgs: [...imgsSP] };
+  lastSPP = p; await runStylePage(p);
+}
+async function regenStylePage() { if (lastSPP) await runStylePage(lastSPP); }
+async function runStylePage(p) {
+  const st = S[stylist];
+  setLoading('sp', true);
+  const prompt = `HPBのスタイルページ用テキストを4種類、以下の形式で作成してください。${p.imgs.length ? '添付写真を参考にしてください。' : ''}
+メニュー：${p.menu||'未指定'} / 長さ：${p.len||'未指定'} / イメージ：${p.img||'未指定'} / アピール：${p.ap||'なし'}
+
+必ず以下の形式で出力してください：
+TITLES
+1. [スタイル名案1（必ず30字以内・スタイルの特徴を端的に）]
+2. [スタイル名案2（必ず30字以内・違うアングル）]
+3. [スタイル名案3（必ず30字以内・感情訴求系）]
+COMMENT
+[スタイリストコメント（必ず120字以内）。スタイルの特徴・技術のこだわり・どんな人に向いているかを簡潔に]
+TAGS
+[メニュー内容タグ（必ず50字以内）。スペース区切りで検索キーワードになる短いタグを並べる。例：ミニボブ 透け前髪 切りっぱなし 前髪あり]
+HASHTAGS
+[ハッシュタグを7〜10個。各タグは#記号なし・20字以内・改行区切りで出力]`;
+  try {
+    let messages;
+    if (p.imgs.length) {
+      const cnt = [];
+      for (const f of p.imgs) cnt.push({ type: 'image', source: { type: 'base64', media_type: f.type || 'image/jpeg', data: await b64(f) } });
+      cnt.push({ type: 'text', text: prompt });
+      messages = [{ role: 'user', content: cnt }];
+    } else {
+      messages = [{ role: 'user', content: prompt }];
+    }
+    const raw = await callAPI(SYS + `
+
+【文体】${st.tone}`, messages);
+    const parsed = parseStylePage(raw);
+    renderTitles('titles-sp', parsed.titles, 30);
+    // Comment
+    const commentEl = document.getElementById('body-sp-comment');
+    commentEl.textContent = parsed.comment;
+    commentEl.contentEditable = 'false';
+    liveCount('body-sp-comment','sp-cnt-comment',120);
+    // Tags
+    const tagsEl = document.getElementById('body-sp-tags');
+    tagsEl.textContent = parsed.tags;
+    tagsEl.contentEditable = 'false';
+    liveCount('body-sp-tags','sp-cnt-tags',50);
+    // Hashtags
+    const hashEl = document.getElementById('body-sp-hash');
+    hashEl.textContent = parsed.hashtags.map(h => '#' + h.replace(/^#/,'')).join('　');
+    // Meta
+    document.getElementById('meta-sp').innerHTML = `<span class="m-tag ${st.bg}">${st.nm}</span><span class="m-tag">スタイルページ</span>`;
+    document.getElementById('out-sp').classList.add('on');
+    document.getElementById('hpb-sp').classList.add('on');
+    saveHist({ type: 'stylepage', typeLabel: 'スタイルページ', stylist, styleName: st.nm, styleBg: st.bg, title: parsed.titles[0] || 'スタイルページ', body: parsed.comment, chars: parsed.comment.length, date: new Date().toISOString() });
+  } catch(e) { if (e.message !== 'no key') toast('エラー: ' + e.message); }
+  setLoading('sp', false);
+}
+
+function parseStylePage(raw) {
+  const lines = raw.split('\n');
+  const titles = []; let comment = '', tags = ''; const hashtags = [];
+  let mode = '';
+  for (const ln of lines) {
+    const t = ln.trim();
+    if (/^TITLES/.test(t)) { mode = 'titles'; continue; }
+    if (/^COMMENT/.test(t)) { mode = 'comment'; continue; }
+    if (/^TAGS/.test(t)) { mode = 'tags'; continue; }
+    if (/^HASHTAGS/.test(t)) { mode = 'hashtags'; continue; }
+    if (mode === 'titles') { const m = t.match(/^[1-3][.．、]\s*(.+)/); if (m) titles.push(m[1].trim()); }
+    else if (mode === 'comment' && t) comment += (comment ? '\n' : '') + t;
+    else if (mode === 'tags' && t) tags += (tags ? ' ' : '') + t;
+    else if (mode === 'hashtags' && t) hashtags.push(t.replace(/^#/,''));
+  }
+  return { titles: titles.slice(0,3), comment: comment.slice(0,120), tags: tags.slice(0,50), hashtags: hashtags.slice(0,10) };
+}
+
+// ── GEN REVIEW REPLY ──
+async function genReview() {
+  const revText = document.getElementById('rev-text').value.trim();
+  if (!revText) { toast('口コミ本文を入力してください'); return; }
+  const p = { revText, star: starRating, cat: revCat, tone: document.getElementById('rev-tone').value };
+  lastRevP = p; await runReview(p);
+}
+async function regenReview() { if (lastRevP) await runReview(lastRevP); }
+async function runReview(p) {
+  const st = S[stylist];
+  setLoading('rev', true);
+  const catLabel = { positive: '満足・感謝', repeat: 'リピート宣言', tech: '技術への評価', atmosphere: '雰囲気・接客', concern: '改善要望あり', other: 'その他' };
+  const toneGuide = { warm: '温かみがあり丁寧。感謝の気持ちが伝わる文体。', cool: '洗練されていて品がある。シンプルで無駄のない文体。', casual: '親しみやすくフレンドリー。でも軽すぎない。' };
+  const starTips = p.star <= 3 ? 'お客様の不満・要望に誠実に向き合い、改善への姿勢を示す。謝罪より感謝と前向きな姿勢を優先。' : 'お客様への感謝を伝え、具体的な内容に触れながら次回来店への期待を添える。';
+  const prompt = `以下のお客様の口コミに対するサロン返信文を作成してください。
+
+【口コミ】
+${p.revText}
+
+【星評価】${p.star}つ（5点満点）
+【内容カテゴリ】${catLabel[p.cat]}
+【返信のトーン】${toneGuide[p.tone]}
+【トーン補足】堅苦しくならず、自然に感謝が伝わる文体で。敬語は使うが、読んで温かみを感じられるように。
+【ポイント】${starTips}
+
+返信文のみを出力してください（ラベルや見出し不要）。150〜250字程度。サロン名「NEUTRIZE」は最後の署名以外では使わない。末尾に「NEUTRIZE」と署名を入れる。`;
+  try {
+    const raw = await callAPI(SYS + `\n\n【返信担当の文体】${st.tone}`, [{ role: 'user', content: prompt }]);
+    renderBody('body-rev', raw.trim(), 'meta-rev', `<span class="m-tag">${raw.trim().length}字</span><span class="m-tag ${st.bg}">${st.nm}</span><span class="m-tag">★${p.star} ${catLabel[p.cat]}</span>`);
+    document.getElementById('out-rev').classList.add('on');
+    document.getElementById('hpb-rev').classList.add('on');
+    saveHist({ type: 'review', typeLabel: '口コミ返信', stylist, styleName: st.nm, styleBg: st.bg, title: `★${p.star} 口コミ返信`, body: raw.trim(), chars: raw.trim().length, date: new Date().toISOString() });
+  } catch(e) { if (e.message !== 'no key') toast('エラー: ' + e.message); }
+  setLoading('rev', false);
+}
+
+// ── GEN SEO ──
+async function genSeo() {
+  const kw = document.getElementById('seo-kw').value.trim();
+  if (!kw) { toast('メインキーワードを入力してください'); return; }
+  const p = { kw, len: document.getElementById('seo-len').value, prob: document.getElementById('seo-prob').value, kws: getKws('kw-seo'), type: blogType };
+  lastSeoP = p; await runSeo(p);
+}
+async function regenSeo() { if (lastSeoP) await runSeo(lastSeoP); }
+async function runSeo(p) {
+  const st = S[stylist];
+  setLoading('seo', true);
+  const prompt = `以下の条件でNEUTRIZEのブログ記事を書いてください。
+タイプ：${TYPE_LBL[p.type]} / テーマ：${p.kw} / 文字数：約${p.len}字
+読者の悩み：${p.prob||'指定なし'} / 関連ワード：${p.kws.join('、')||'なし'}
+
+【SEOの考え方】
+キーワードは「意識して入れている感」が出ないよう、文章の流れに溶け込ませてください。
+検索ワードを詰め込むのではなく、そのテーマについて読み手が自然と読み進めたくなる記事を目指してください。
+タイトルも「SEOタイトルっぽさ」より、NEUTRIZEらしい品のある言葉を優先してください。
+
+【NEUTRIZEの空気感】
+- 余分なものをそぎ落とした、シンプルで洗練された文章
+- 押しつけがましくなく、でも確かな技術と哲学が伝わる
+- 読んで「ここに行ってみたい」と自然に思える流れ
+
+以下の形式で出力してください：
+TITLES
+1. [タイトル案1（25字以内・自然にキーワードを含む）]
+2. [タイトル案2（25字以内・読者の気持ちに寄り添う角度）]
+3. [タイトル案3（25字以内・NEUTRIZEらしい品のある表現）]
+BODY
+[本文のみ${p.len}字。予約誘導・署名は含めない。読者の悩みへの共感から始め、H2見出し2〜3本で構成。NEUTRIZEのこだわりを押しつけがましくなく1〜2回触れて締める]`;
+  try {
+    const raw = await callAPI(SYS_BLOG + `\n\n【文体】${st.tone}`, [{ role: 'user', content: prompt }]);
+    const { titles, body } = parseOut(raw);
+    const fullBodySeo = body + SIGNATURE;
+    renderTitles('titles-seo', titles, 25);
+    renderBody('body-seo', fullBodySeo, 'meta-seo', `<span class="m-tag">${body.length}字（本文）＋署名</span><span class="m-tag ${st.bg}">${st.nm}</span><span class="m-tag">${TYPE_LBL[p.type]}</span>`);
+    document.getElementById('out-seo').classList.add('on');
+    document.getElementById('hpb-seo').classList.add('on');
+    saveHist({ type: 'seo', typeLabel: TYPE_LBL[p.type], stylist, styleName: st.nm, styleBg: st.bg, title: titles[0] || p.kw, body: fullBodySeo, chars: body.length, date: new Date().toISOString() });
+  } catch(e) { if (e.message !== 'no key') toast('エラー: ' + e.message); }
+  setLoading('seo', false);
+}
+
+// ── LOADING ──
+const BTN_LABELS = { style: 'スタイル紹介ブログを生成 — タイトル3案＋本文', sp: 'スタイルページ用テキストを一括生成', rev: '返信文を生成', seo: 'SEOブログを生成', coupon: 'クーポン名・内容を生成' };
+function setLoading(id, on) {
+  document.getElementById('lb-' + id).classList.toggle('on', on);
+  const btn = document.getElementById('btn-' + id);
+  btn.disabled = on; btn.textContent = on ? '生成中...' : BTN_LABELS[id];
+}
+
+// ── HISTORY ──
+function saveHist(item) {
+  const hist = getHist(); hist.unshift(item);
+  localStorage.setItem('ntz_hist', JSON.stringify(hist.slice(0, 100)));
+  updateHistCount();
+}
+function getHist() { try { return JSON.parse(localStorage.getItem('ntz_hist') || '[]'); } catch { return []; } }
+function updateHistCount() { document.getElementById('histCount').textContent = getHist().length; }
+function fmtDate(iso) { const d = new Date(iso); return `${d.getMonth()+1}/${d.getDate()} ${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}`; }
+function renderHist() {
+  const hist = getHist();
+  const body = document.getElementById('histBody');
+  if (!hist.length) { body.innerHTML = '<div class="hist-empty">まだ履歴がありません。<br>生成後に自動で記録されます。</div>'; return; }
+  body.innerHTML = hist.map((h, i) => `
+    <div class="h-item" onclick="openDet(${i})">
+      <div class="h-top">
+        <div class="h-badges"><span class="h-type ${h.styleBg}">${h.typeLabel}</span><span class="h-sty">${h.styleName}</span></div>
+        <span class="h-date">${fmtDate(h.date)}</span>
+      </div>
+      <div class="h-ttl">${h.title}</div>
+      <div class="h-prev">${h.body}</div>
+      <div class="h-ch">${h.chars}字</div>
+    </div>`).join('');
+}
+
+// ── DETAIL ──
+function openDet(idx) {
+  detIdx = idx;
+  const h = getHist()[idx];
+  document.getElementById('det-badge').textContent = `${h.typeLabel} · ${h.styleName} · ${fmtDate(h.date)}`;
+  document.getElementById('det-title').textContent = h.title;
+  document.getElementById('det-meta').innerHTML = `<span class="m-tag ${h.styleBg}">${h.styleName}</span><span class="m-tag">${h.typeLabel}</span><span class="m-tag">${h.chars}字</span>`;
+  const txt = document.getElementById('det-text');
+  txt.textContent = h.body; txt.contentEditable = 'false';
+  document.getElementById('det-edit-btn').textContent = '編集';
+  goTo('s-detail');
+}
+function toggleDetEdit() {
+  const el = document.getElementById('det-text');
+  const btn = document.getElementById('det-edit-btn');
+  const isEd = el.contentEditable === 'true';
+  if (isEd) {
+    el.contentEditable = 'false'; btn.textContent = '編集';
+    const hist = getHist();
+    if (detIdx !== null) { hist[detIdx].body = el.textContent; hist[detIdx].chars = el.textContent.length; }
+    localStorage.setItem('ntz_hist', JSON.stringify(hist));
+    toast('保存しました');
+  } else { el.contentEditable = 'true'; el.focus(); btn.textContent = '完了'; }
+}
+function detCopy() { copyText(document.getElementById('det-text').textContent); toast('コピーしました'); }
+function detHPB() { copyText(document.getElementById('det-text').textContent); toast('コピーしました — HPBを開きます'); setTimeout(() => window.open(HPB_URL, '_blank'), 600); }
+function detDelete() {
+  if (!confirm('この履歴を削除しますか？')) return;
+  const hist = getHist(); hist.splice(detIdx, 1);
+  localStorage.setItem('ntz_hist', JSON.stringify(hist));
+  updateHistCount(); goTo('s-hist');
+}
+
+
+// ── COUPON ──
+let lastCouponP = null;
+async function genCoupon() {
+  const p = {
+    type: document.getElementById('cp-type').value,
+    menu: document.getElementById('cp-menu').value,
+    price: document.getElementById('cp-price').value,
+    time: document.getElementById('cp-time').value,
+    appeal: document.getElementById('cp-appeal').value,
+    cvr: getKws('kw-coupon')
+  };
+  if (!p.menu) { toast('メニューを選択してください'); return; }
+  lastCouponP = p; await runCoupon(p);
+}
+async function regenCoupon() { if (lastCouponP) await runCoupon(lastCouponP); }
+async function runCoupon(p) {
+  const st = S[stylist];
+  setLoading('coupon', true);
+  const typeLabel = { new:'新規', repeat:'リピート', both:'新規・リピート両方' };
+  const prompt = `HPBのクーポンを作成してください。
+種別：${typeLabel[p.type]} / メニュー：${p.menu}
+価格：${p.price ? '¥'+p.price+'（税込）' : '未指定'} / 施術時間：${p.time || '未指定'}
+アピール：${p.appeal || 'なし'} / CVRポイント：${p.cvr.join('・') || 'なし'}
+
+【クーポン作成の指針】
+- 新規のお客様が「このサロンに行ってみたい」と感じるコピーにする
+- 【】などの記号は効果的に使う（ただし多用しない）
+- 価格と施術内容が明確に伝わること
+- NEUTRIZEらしい品のある表現を保つ
+- あからさまな煽り文句は避ける
+
+以下の形式で出力してください：
+TITLES
+1. [クーポン名案1（必ず36字以内）]
+2. [クーポン名案2（必ず36字以内・違う切り口）]
+3. [クーポン名案3（必ず36字以内・シンプル系）]
+BODY
+[クーポン内容（必ず90字以内）。施術の特徴・使用薬剤・仕上がりのイメージを簡潔に。価格・時間は含めない]`;
+  try {
+    const raw = await callAPI(SYS + `
+
+【文体】${st.tone}`, [{ role: 'user', content: prompt }]);
+    const { titles, body } = parseOut(raw);
+    renderTitles('titles-coupon', titles, 36);
+    const bodyEl = document.getElementById('body-coupon');
+    bodyEl.textContent = body.slice(0, 90);
+    bodyEl.contentEditable = 'false';
+    liveCount('body-coupon', 'cp-cnt', 90);
+    bodyEl.addEventListener('input', () => liveCount('body-coupon', 'cp-cnt', 90));
+    const warn = body.length > 90 ? ' warn' : '';
+    document.getElementById('meta-coupon').innerHTML = `<span class="m-tag${warn}">${Math.min(body.length,90)}/90字</span><span class="m-tag ${st.bg}">${st.nm}</span><span class="m-tag">${typeLabel[p.type]}</span>`;
+    document.getElementById('out-coupon').classList.add('on');
+    document.getElementById('hpb-coupon').classList.add('on');
+    saveHist({ type: 'coupon', typeLabel: 'クーポン', stylist, styleName: st.nm, styleBg: st.bg, title: titles[0] || 'クーポン', body: body.slice(0,90), chars: Math.min(body.length,90), date: new Date().toISOString() });
+  } catch(e) { if (e.message !== 'no key') toast('エラー: ' + e.message); }
+  setLoading('coupon', false);
+}
+function openHPBCoupon() {
+  toast('HPBクーポン管理を開きます');
+  setTimeout(() => window.open('https://salonboard.com/login/', '_blank'), 600);
+}
+
+// ── HPB KEYWORD MANAGEMENT ──
+function saveHPBKeywords() {
+  const raw = document.getElementById('hpb-kw-input').value.trim();
+  if (!raw) return;
+  const kws = raw.split(/[\s\n,、]+/).map(k => k.trim()).filter(k => k.length > 0);
+  localStorage.setItem('ntz_hpb_kws', JSON.stringify(kws));
+  renderHPBKeywords();
+  const saved = document.getElementById('hpb-kw-saved');
+  saved.style.display = 'block';
+  setTimeout(() => saved.style.display = 'none', 2000);
+  toast('HPBキーワードを保存しました');
+}
+function clearHPBKeywords() {
+  localStorage.removeItem('ntz_hpb_kws');
+  document.getElementById('hpb-kw-input').value = '';
+  renderHPBKeywords();
+  toast('クリアしました');
+}
+function renderHPBKeywords() {
+  const kws = JSON.parse(localStorage.getItem('ntz_hpb_kws') || '[]');
+  ['style', 'seo'].forEach(tab => {
+    const wrap = document.getElementById('kw-' + tab + '-hpb');
+    const empty = document.getElementById('kw-' + tab + '-empty');
+    if (!wrap) return;
+    wrap.innerHTML = '';
+    if (kws.length === 0) { if (empty) empty.style.display = 'block'; return; }
+    if (empty) empty.style.display = 'none';
+    kws.forEach(kw => {
+      const sp = document.createElement('span');
+      sp.className = 'kw'; sp.textContent = kw;
+      sp.onclick = () => sp.classList.toggle('on');
+      wrap.appendChild(sp);
+    });
+  });
+  const input = document.getElementById('hpb-kw-input');
+  if (input && kws.length > 0) input.value = kws.join('　');
+}
+
+// ── TOAST ──
+function toast(msg) {
+  document.querySelectorAll('.toast').forEach(t => t.remove());
+  const el = document.createElement('div'); el.className = 'toast'; el.textContent = msg;
+  document.body.appendChild(el); setTimeout(() => el.remove(), 2200);
+}
+
+// ── INIT ──
+updateHistCount();
+renderHPBKeywords();
+</script>
+</body>
+</html>
